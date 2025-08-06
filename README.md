@@ -54,6 +54,12 @@ Requests müssen das Feld `secret` und `action` enthalten. Der Rückgabewert ist
   Body `{"secret":"$SECRET","action":"setLabel","query":"from:user@example.com","labelName":"Wichtig","maxResults":5}`
 
 
+### Labels abrufen
+
+  Header: `"Content-Type: application/json"` \
+  Body `{"secret":"$SECRET","action":"getLabels"}`
+
+
 ### Zeile zu Sheet hinzufügen
 
   Header: `"Content-Type: application/json"` \
