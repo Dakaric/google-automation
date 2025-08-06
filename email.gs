@@ -1,32 +1,34 @@
-function addRowToSheet(params) {
+function sendEmail(params) {
   try {
-    if (!params.spreadsheetId || !params.sheetName || !params.rowData) {
+    if (!params.to || !params.subject || !params.body) {
       return { error: 'Missing parameters' };
     }
-    var sheet = SpreadsheetApp.openById(params.spreadsheetId).getSheetByName(params.sheetName);
-    if (!sheet) {
-      return { error: 'Sheet not found' };
-    }
-    sheet.appendRow(params.rowData);
+    GmailApp.sendEmail(params.to, params.subject, params.body, {
+      htmlBody: params.htmlBody || params.body,
+    });
     return { status: 'ok' };
   } catch (err) {
     return { error: err.message };
   }
 }
 
-function getSheetRows(params) {
+function getEmails(params) {
   try {
-    if (!params.spreadsheetId || !params.sheetName) {
-      return { error: 'Missing parameters' };
-    }
-    var sheet = SpreadsheetApp.openById(params.spreadsheetId).getSheetByName(params.sheetName);
-    if (!sheet) {
-      return { error: 'Sheet not found' };
-    }
-    var start = params.startRow || 1;
-    var num = params.numRows || sheet.getLastRow();
-    var data = sheet.getRange(start, 1, num, sheet.getLastColumn()).getValues();
-    return { rows: data };
+    var query = params.query || 'is:unread';
+    var max = params.maxResults || 10;
+    var threads = GmailApp.search(query, 0, max);
+    var messages = [];
+    threads.forEach(function (thread) {
+      var msg = thread.getMessages()[0];
+      messages.push({
+        id: msg.getId(),
+        subject: msg.getSubject(),
+        from: msg.getFrom(),
+        date: msg.getDate(),
+        snippet: msg.getPlainBody().slice(0, 100),
+      });
+    });
+    return { messages: messages };
   } catch (err) {
     return { error: err.message };
   }
