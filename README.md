@@ -21,14 +21,22 @@ appsscript.json
 5. Beim ersten Aufruf die angeforderten Berechtigungen akzeptieren.
 
 ## Nutzung
+Um Secret und Deployment-ID nicht in jedem Befehl anzugeben, können sie als Variablen gesetzt werden:
+
+```bash
+SECRET="YOUR_SECRET"
+DEPLOYMENT_ID="DEPLOYMENT_ID"
+BASE_URL="https://script.google.com/macros/s/${DEPLOYMENT_ID}/exec"
+```
+
 Requests müssen das Feld `secret` und `action` enthalten. Der Rückgabewert ist JSON.
 
 ### E-Mail senden
 ```bash
-curl -X POST "https://script.google.com/macros/s/DEPLOYMENT_ID/exec" \
+curl -X POST "$BASE_URL" \
   -H "Content-Type: application/json" \
   -d '{
-        "secret":"YOUR_SECRET",
+        "secret":"'"$SECRET"'",
         "action":"sendEmail",
         "to":"user@example.com",
         "subject":"Hallo",
@@ -39,10 +47,10 @@ curl -X POST "https://script.google.com/macros/s/DEPLOYMENT_ID/exec" \
 
 ### E-Mails abrufen
 ```bash
-curl -X POST "https://script.google.com/macros/s/DEPLOYMENT_ID/exec" \
+curl -X POST "$BASE_URL" \
   -H "Content-Type: application/json" \
   -d '{
-        "secret":"YOUR_SECRET",
+        "secret":"'"$SECRET"'",
         "action":"getEmails",
         "query":"is:unread",
         "maxResults":5
@@ -51,10 +59,10 @@ curl -X POST "https://script.google.com/macros/s/DEPLOYMENT_ID/exec" \
 
 ### Zeile zu Sheet hinzufügen
 ```bash
-curl -X POST "https://script.google.com/macros/s/DEPLOYMENT_ID/exec" \
+curl -X POST "$BASE_URL" \
   -H "Content-Type: application/json" \
   -d '{
-        "secret":"YOUR_SECRET",
+        "secret":"'"$SECRET"'",
         "action":"addRowToSheet",
         "spreadsheetId":"SPREADSHEET_ID",
         "sheetName":"Tabelle1",
@@ -64,10 +72,10 @@ curl -X POST "https://script.google.com/macros/s/DEPLOYMENT_ID/exec" \
 
 ### Zeilen aus Sheet lesen
 ```bash
-curl -X POST "https://script.google.com/macros/s/DEPLOYMENT_ID/exec" \
+curl -X POST "$BASE_URL" \
   -H "Content-Type: application/json" \
   -d '{
-        "secret":"YOUR_SECRET",
+        "secret":"'"$SECRET"'",
         "action":"getSheetRows",
         "spreadsheetId":"SPREADSHEET_ID",
         "sheetName":"Tabelle1",
@@ -78,10 +86,10 @@ curl -X POST "https://script.google.com/macros/s/DEPLOYMENT_ID/exec" \
 
 ### Dokument erstellen
 ```bash
-curl -X POST "https://script.google.com/macros/s/DEPLOYMENT_ID/exec" \
+curl -X POST "$BASE_URL" \
   -H "Content-Type: application/json" \
   -d '{
-        "secret":"YOUR_SECRET",
+        "secret":"'"$SECRET"'",
         "action":"createDocument",
         "title":"Neues Dokument",
         "body":"Inhalt"
@@ -90,10 +98,10 @@ curl -X POST "https://script.google.com/macros/s/DEPLOYMENT_ID/exec" \
 
 ### Kalendereintrag erstellen
 ```bash
-curl -X POST "https://script.google.com/macros/s/DEPLOYMENT_ID/exec" \
+curl -X POST "$BASE_URL" \
   -H "Content-Type: application/json" \
   -d '{
-        "secret":"YOUR_SECRET",
+        "secret":"'"$SECRET"'",
         "action":"createCalendarEvent",
         "calendarId":"primary",
         "title":"Meeting",
