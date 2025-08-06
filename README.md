@@ -1,50 +1,116 @@
-App-Struktur
-google-cloud-bridge/
-├─ README.md
-├─ Code.gs
-├─ modules/
-│   ├─ email.gs
-│   ├─ sheets.gs
-│   ├─ docs.gs
-│   └─ calendar.gs
-└─ appsscript.json
+# Google Apps Script Universal API
 
+Dieses Projekt stellt eine einfache Webhook-API zur Verfügung, um Gmail, Google Sheets, Google Docs und Google Calendar über HTTP anzusprechen.
 
-# Google Cloud Bridge (Apps Script Universal API)
+## Struktur
+```
+Code.gs
+modules/
+  email.gs
+  sheets.gs
+  docs.gs
+  calendar.gs
+appsscript.json
+```
 
-Dieses Projekt stellt eine universelle Google Apps Script Schnittstelle bereit, über die du per HTTP-Webhook verschiedene Google-Dienste steuern kannst (Gmail, Sheets, Docs, Calendar).
+## Einrichtung
+1. Alle Dateien in ein neues Apps Script Projekt kopieren.
+2. In `Code.gs` den Wert von `WEBHOOK_SECRET` setzen.
+3. In den Projekteinstellungen die Datei `appsscript.json` anzeigen und die enthaltenen OAuth‑Scopes übernehmen.
+4. Bereitstellen > Als Web-App bereitstellen und die URL notieren.
+5. Beim ersten Aufruf die angeforderten Berechtigungen akzeptieren.
 
-## 📦 Features
-- Emails senden, abrufen
-- Google Sheets lesen, beschreiben
-- Google Docs anlegen, füllen
-- Kalender-Termine erstellen
-- Modular erweiterbar
-- Zugriff per Webhook aus n8n, Make, Postman etc.
-
-## 🛠️ Einrichtung
-
-### 1. Dieses Repo herunterladen oder die Dateien übernehmen
-### 2. In Google Apps Script einfügen ([https://script.google.com](https://script.google.com))
-   - Hauptdatei: Code.gs
-   - Module: Die Dateien aus `modules/` (über "+ Datei" hinzufügen)
-   - Optional: `appsscript.json` unter „Projektdateien anzeigen“ hinzufügen (Scopes)
-### 3. In `Code.gs` das Secret setzen (`WEBHOOK_SECRET`)
-### 4. Web-App veröffentlichen:
-   - Menü > Bereitstellen > Als Web-App bereitstellen
-   - Zugriff: "Nur mich" (zum Testen) oder "Jeder mit Link" (für Produktion)
-### 5. Beim ersten Aufruf die Berechtigungen akzeptieren
-### 6. Webhook-URL in n8n, Make, Postman etc. verwenden
-
-## 🔑 Beispiel-Webhook
+## Nutzung
+Um Secret und Deployment-ID nicht in jedem Befehl anzugeben, können sie als Variablen gesetzt werden:
 
 ```bash
-curl -X POST "https://script.google.com/macros/s/DEINE_ID/exec" \
+SECRET="YOUR_SECRET"
+DEPLOYMENT_ID="DEPLOYMENT_ID"
+BASE_URL="https://script.google.com/macros/s/${DEPLOYMENT_ID}/exec"
+```
+
+Requests müssen das Feld `secret` und `action` enthalten. Der Rückgabewert ist JSON.
+
+### E-Mail senden
+```bash
+curl -X POST "$BASE_URL" \
   -H "Content-Type: application/json" \
   -d '{
-        "secret": "DEIN_SECRET",
-        "action": "addRowToSheet",
-        "spreadsheetId": "...",
-        "sheetName": "Daten",
-        "rowData": ["2025-08-06","Test","123"]
+        "secret":"'"$SECRET"'",
+        "action":"sendEmail",
+        "to":"user@example.com",
+        "subject":"Hallo",
+        "body":"Text",
+        "htmlBody":"<p>Text</p>"
       }'
+```
+
+### E-Mails abrufen
+```bash
+curl -X POST "$BASE_URL" \
+  -H "Content-Type: application/json" \
+  -d '{
+        "secret":"'"$SECRET"'",
+        "action":"getEmails",
+        "query":"is:unread",
+        "maxResults":5
+      }'
+```
+
+### Zeile zu Sheet hinzufügen
+```bash
+curl -X POST "$BASE_URL" \
+  -H "Content-Type: application/json" \
+  -d '{
+        "secret":"'"$SECRET"'",
+        "action":"addRowToSheet",
+        "spreadsheetId":"SPREADSHEET_ID",
+        "sheetName":"Tabelle1",
+        "rowData":["A","B","C"]
+      }'
+```
+
+### Zeilen aus Sheet lesen
+```bash
+curl -X POST "$BASE_URL" \
+  -H "Content-Type: application/json" \
+  -d '{
+        "secret":"'"$SECRET"'",
+        "action":"getSheetRows",
+        "spreadsheetId":"SPREADSHEET_ID",
+        "sheetName":"Tabelle1",
+        "startRow":1,
+        "numRows":10
+      }'
+```
+
+### Dokument erstellen
+```bash
+curl -X POST "$BASE_URL" \
+  -H "Content-Type: application/json" \
+  -d '{
+        "secret":"'"$SECRET"'",
+        "action":"createDocument",
+        "title":"Neues Dokument",
+        "body":"Inhalt"
+      }'
+```
+
+### Kalendereintrag erstellen
+```bash
+curl -X POST "$BASE_URL" \
+  -H "Content-Type: application/json" \
+  -d '{
+        "secret":"'"$SECRET"'",
+        "action":"createCalendarEvent",
+        "calendarId":"primary",
+        "title":"Meeting",
+        "startTime":"2025-01-01T09:00:00Z",
+        "endTime":"2025-01-01T10:00:00Z",
+        "description":"Besprechung",
+        "location":"Büro"
+      }'
+```
+
+## Lizenz
+MIT
