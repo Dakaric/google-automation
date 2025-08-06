@@ -80,6 +80,13 @@ curl -X POST "$BASE_URL" \
   -d '{"secret":"'"$SECRET"'","action":"createDocument","title":"Neues Dokument","body":"Inhalt"}'
 ```
 
+### Dokument abrufen
+```bash
+curl -X POST "$BASE_URL" \
+  -H "Content-Type: application/json" \
+  -d '{"secret":"'"$SECRET"'","action":"getDocument","documentId":"DOCUMENT_ID"}'
+```
+
 ### Kalendereintrag erstellen
 ```bash
 curl -X POST "$BASE_URL" \

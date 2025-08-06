@@ -10,3 +10,20 @@ function createDocument(params) {
     return { error: err.message };
   }
 }
+
+function getDocument(params) {
+  try {
+    if (!params.documentId) {
+      return { error: 'Missing documentId' };
+    }
+    var doc = DocumentApp.openById(params.documentId);
+    return {
+      documentId: params.documentId,
+      title: doc.getName(),
+      body: doc.getBody().getText(),
+      url: doc.getUrl(),
+    };
+  } catch (err) {
+    return { error: err.message };
+  }
+}
