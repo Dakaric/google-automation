@@ -1,4 +1,4 @@
-const WEBHOOK_SECRET = 'CHANGE_ME';
+const WEBHOOK_SECRET = 'LjtR!DDJQ2ixU';
 
 function doPost(e) {
   try {
@@ -29,6 +29,6 @@ function doPost(e) {
 }
 
 function respond(obj) {
-  return ContentService.createTextOutput(JSON.stringify(obj))
+  return ContentService.createTextOutput(JSON.stringify(obj).trim())
     .setMimeType(ContentService.MimeType.JSON);
 }
