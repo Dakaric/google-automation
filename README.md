@@ -32,55 +32,55 @@ Requests müssen das Feld `secret` und `action` enthalten. Der Rückgabewert ist
 
 ### E-Mail senden
 
-  Header: `"Content-Type: application/json"`
+  Header: `"Content-Type: application/json"` \
   Body `{"secret":"$SECRET","action":"sendEmail","to":"user@example.com","subject":"Hallo","body":"Text","htmlBody":"<p>Text</p>"}`
 
 
 ### E-Mails abrufen
 
-  Header: `"Content-Type: application/json"`
+  Header: `"Content-Type: application/json"` \
   Body `{"secret":"$SECRET","action":"getEmails","query":"is:unread","maxResults":5}`
 
 
 ### E-Mails als gelesen markieren
 
-  Header: `"Content-Type: application/json"`
+  Header: `"Content-Type: application/json"` \
   Body `{"secret":"$SECRET","action":"markAsRead","query":"is:unread","maxResults":5}`
 
 
 ### Label für Emails setzen
 
-  Header: `"Content-Type: application/json"`
+  Header: `"Content-Type: application/json"` \
   Body `{"secret":"$SECRET","action":"setLabel","query":"from:user@example.com","labelName":"Wichtig","maxResults":5}`
 
 
 ### Zeile zu Sheet hinzufügen
 
-  Header: `"Content-Type: application/json"`
+  Header: `"Content-Type: application/json"` \
   Body `{"secret":"$SECRET","action":"addRowToSheet","spreadsheetId":"SPREADSHEET_ID","sheetName":"Tabelle1","rowData":["A","B","C"]}`
 
 
 ### Zeilen aus Sheet lesen
 
-  Header: `"Content-Type: application/json"`
+  Header: `"Content-Type: application/json"` \
   Body `{"secret":"$SECRET","action":"getSheetRows","spreadsheetId":"SPREADSHEET_ID","sheetName":"Tabelle1","startRow":1,"numRows":10}`
 
 
 ### Dokument erstellen
 
-  Header: `"Content-Type: application/json"`
+  Header: `"Content-Type: application/json"` \
   Body `{"secret":"$SECRET","action":"createDocument","title":"Neues Dokument","body":"Inhalt"}`
 
 
 ### Dokument abrufen
 
-  Header: `"Content-Type: application/json"`
+  Header: `"Content-Type: application/json"` \
   Body `{"secret":"$SECRET","action":"getDocument","documentId":"DOCUMENT_ID"}`
 
 
 ### Kalendereintrag erstellen
 
-  Header: `"Content-Type: application/json"`
+  Header: `"Content-Type: application/json"` \
   Body `{"secret":"$SECRET","action":"createCalendarEvent","calendarId":"primary","title":"Meeting","startTime":"2025-01-01T09:00:00Z","endTime":"2025-01-01T10:00:00Z","description":"Besprechung","location":"Büro"}`
 
 
