@@ -15,6 +15,7 @@ function doPost(e) {
       addRowToSheet: addRowToSheet,
       getSheetRows: getSheetRows,
       createDocument: createDocument,
+      getDocument: getDocument,
       createCalendarEvent: createCalendarEvent,
       markAsRead: markAsRead,
       setLabel: setLabel,
