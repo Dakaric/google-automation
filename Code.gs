@@ -1,4 +1,4 @@
-const WEBHOOK_SECRET = 'LjtR!DDJQ2ixU';
+const WEBHOOK_SECRET = 'RICHTIG_FETTER_SECRET_KEY';
 
 function doPost(e) {
   try {
