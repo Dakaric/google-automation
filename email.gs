@@ -69,3 +69,14 @@ function setLabel(params) {
     return { error: err.message };
   }
 }
+
+function getLabels() {
+  try {
+    var labels = GmailApp.getUserLabels().map(function(label) {
+      return label.getName();
+    });
+    return { labels: labels };
+  } catch (err) {
+    return { error: err.message };
+  }
+}

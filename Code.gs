@@ -19,6 +19,7 @@ function doPost(e) {
       createCalendarEvent: createCalendarEvent,
       markAsRead: markAsRead,
       setLabel: setLabel,
+      getLabels: getLabels,
     };
     var action = payload.action;
     if (!action || !actions[action]) {
