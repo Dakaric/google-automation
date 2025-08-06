@@ -31,3 +31,39 @@ function getSheetRows(params) {
     return { error: err.message };
   }
 }
+
+function markAsRead(params) {
+  try {
+    var query = params.query || 'is:unread';
+    var max = params.maxResults || 10;
+    var threads = GmailApp.search(query, 0, max);
+    var count = 0;
+    threads.forEach(function(thread) {
+      thread.markRead();
+      count++;
+    });
+    return { status: 'ok', updated: count };
+  } catch (err) {
+    return { error: err.message };
+  }
+}
+
+function setLabel(params) {
+  try {
+    if (!params.labelName) {
+      return { error: 'Missing labelName' };
+    }
+    var query = params.query || '';
+    var max = params.maxResults || 10;
+    var threads = GmailApp.search(query, 0, max);
+    var label = GmailApp.getUserLabelByName(params.labelName) || GmailApp.createLabel(params.labelName);
+    var count = 0;
+    threads.forEach(function(thread) {
+      thread.addLabel(label);
+      count++;
+    });
+    return { status: 'ok', labeled: count };
+  } catch (err) {
+    return { error: err.message };
+  }
+}

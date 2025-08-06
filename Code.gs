@@ -16,6 +16,8 @@ function doPost(e) {
       getSheetRows: getSheetRows,
       createDocument: createDocument,
       createCalendarEvent: createCalendarEvent,
+      markAsRead: markAsRead,
+      setLabel: setLabel,
     };
     var action = payload.action;
     if (!action || !actions[action]) {
