@@ -38,15 +38,36 @@ function getEmails(params) {
 
 function markAsRead(params) {
   try {
-    var query = params.query || 'is:unread';
-    var max = params.maxResults || 10;
-    var threads = GmailApp.search(query, 0, max);
-    var count = 0;
-    threads.forEach(function(thread) {
-      thread.markRead();
-      count++;
-    });
-    return { status: 'ok', updated: count };
+    // Einzelne Nachricht per ID
+    if (params.id) {
+      var threads = GmailApp.search('in:anywhere');
+      var found = false;
+      threads.forEach(function(thread) {
+        var msgs = thread.getMessages();
+        msgs.forEach(function(msg) {
+          if (msg.getId() == params.id) {
+            msg.markRead();
+            found = true;
+          }
+        });
+      });
+      return found
+        ? { status: 'ok', id: params.id }
+        : { error: 'Message not found', id: params.id };
+    }
+    // Mehrere Nachrichten per Query (alte Option)
+    else if (params.query) {
+      var max = params.maxResults || 10;
+      var threads = GmailApp.search(params.query, 0, max);
+      var count = 0;
+      threads.forEach(function(thread) {
+        thread.markRead();
+        count++;
+      });
+      return { status: 'ok', updated: count };
+    } else {
+      return { error: 'Missing parameter: id or query' };
+    }
   } catch (err) {
     return { error: err.message };
   }

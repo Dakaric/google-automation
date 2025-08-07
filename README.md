@@ -44,8 +44,17 @@ Requests müssen das Feld `secret` und `action` enthalten. Der Rückgabewert ist
 
 ### E-Mails als gelesen markieren
 
-  Header: `"Content-Type: application/json"` \
-  Body `{"secret":"$SECRET","action":"markAsRead","query":"is:unread","maxResults":5}`
+  Header: `"Content-Type: application/json"`
+
+  **Nach ID (empfohlen):**
+  ```
+  {"secret":"$SECRET","action":"markAsRead","id":"MESSAGE_ID"}
+  ```
+
+  **Oder per Query (mehrere auf einmal):**
+  ```
+  {"secret":"$SECRET","action":"markAsRead","query":"is:unread","maxResults":5}
+  ```
 
 
 ### Label für Emails setzen
