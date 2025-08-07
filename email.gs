@@ -26,6 +26,8 @@ function getEmails(params) {
         from: msg.getFrom(),
         date: msg.getDate(),
         snippet: msg.getPlainBody().slice(0, 100),
+        bodyPlainText:msg.getPlainBody(),
+        bodyHtml:msg.getBody()
       });
     });
     return { messages: messages };
